@@ -1,5 +1,7 @@
 # CSC2103 Data Structure and Algorithm Assignment
 
+Run the code after setting up everything using `python src/main.py`.
+
 ## Recommedned Python Version Manager
 
 1. Use pyenv to manage your Python versions
