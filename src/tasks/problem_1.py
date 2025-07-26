@@ -1,6 +1,4 @@
 # We need to merge two sorted halves of the arr into a single sorted segment
-from src.tasks.problem_3 import Sudoku
-
 
 def merge(arr, left, mid, right):
     print(f"\nMerging left: {arr[left:mid + 1]} and right: {arr[mid + 1:right + 1]}")
