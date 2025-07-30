@@ -41,7 +41,7 @@ class MinHeap:
       def _heapify_up(self, index: int) -> None:
             # Maintaining the heap property by moving the item up.
             parent = (index - 1) // 2
-            if index > 0 and self.heap[parent][0] > self.heap[index][0]:  # Compare priorities
+            if index > 0 and self.heap[parent][0] > self.heap[index][0]: 
                   self.heap[parent], self.heap[index] = self.heap[index], self.heap[parent]
                   self._heapify_up(parent)
       
@@ -51,9 +51,9 @@ class MinHeap:
             right = 2 * index + 2
             smallest = index
 
-            if left < self.size and self.heap[left][0] < self.heap[smallest][0]:  # Compare priorities
+            if left < self.size and self.heap[left][0] < self.heap[smallest][0]: 
                   smallest = left
-            if right < self.size and self.heap[right][0] < self.heap[smallest][0]:  # Compare priorities
+            if right < self.size and self.heap[right][0] < self.heap[smallest][0]:  
                   smallest = right  
             if smallest != index:
                   self.heap[index], self.heap[smallest] = self.heap[smallest], self.heap[index]
@@ -77,6 +77,26 @@ class DijkstraAlgorithm():
             
             distances = self._dijkstra(graph_copy, source)
             return distances if distances else None
+      
+      def solve_with_paths(self, graph: Dict[str, List[Tuple[str, int]]], source: str) -> Tuple[Dict[str, int], Dict[str, List[str]]] | None:
+            # Show the complete path when solving Dijkstra's algorithm
+            if not self._is_valid_graph(graph, source):
+                  return None
+            graph_copy = {}
+            for vertex, edges in graph.items():
+                  graph_copy[vertex] = edges[:]
+
+            distances, previous = self._solve_with_path(graph_copy, source)
+
+            # Add all the complete paths
+            paths = {}
+            for vertex in graph_copy:
+                  if distances[vertex] == float('inf'):
+                        paths[vertex] = []
+                  else:
+                        paths[vertex] = self._reconstruct_path(previous, source, vertex)
+            
+            return distances, paths
 
       def get_user_graph(self) -> Dict[str, List[Tuple[str, int]]] | None:
             print("\n=== Graph Input ===")
@@ -148,6 +168,16 @@ class DijkstraAlgorithm():
                         print(f"{vertex}: unreachable")
                   else:
                         print(f"{vertex}: {dist}")
+
+      def print_paths(self, distances: Dict[str, int], paths: Dict[str, List[str]], source: str) -> None:
+            # Print the shortest paths from source to all other vertices in the desired format.
+            print(f"\n=== Shortest Paths from {source} ===")
+            for vertex in sorted(distances.keys()):
+                  if distances[vertex] == float('inf'):
+                        print(f"{vertex}: unreachable")
+                  else:
+                        path_str = "->".join(paths[vertex])
+                        print(f"{vertex}: {path_str}")
 
       def _is_valid_graph(self, graph: Dict[str, List[Tuple[str, int]]], source: str) -> bool:
             # Check if graph is empty or has invalid structure
@@ -223,14 +253,8 @@ class DijkstraAlgorithm():
                   print(f"No path found from {source} to {destination}.")
                   return None
             
-            # Restore the path from source to destination
-            path = []
-            current = destination
-            while current is not None:
-                  path.append(current)
-                  current = previous[current]
-            
-            path.reverse() 
+            # Restore the path from source to destination using the helper method
+            path = self._reconstruct_path(previous, source, destination)
             return path
       
       def _solve_with_path(self, graph: Dict[str, List[Tuple[str, int]]], source: str) -> Tuple[Dict[str, int], Dict[str, Optional[str]]]:
@@ -265,6 +289,23 @@ class DijkstraAlgorithm():
             
             return distance, previous
 
+      def _reconstruct_path(self, previous: Dict[str, Optional[str]], source: str, destination: str) -> List[str]:
+            """
+            Reconstruct the shortest path from source to destination using the previous vertices.
+            This method traces back from destination to source using the previous dictionary.
+            """
+            path = []
+            current = destination
+            
+            # Trace back from destination to source
+            while current is not None:
+                  path.append(current)
+                  current = previous[current]
+            
+            # Reverse the path to get source -> destination order
+            path.reverse()
+            return path
+      
 def problem_2(): 
       print("Problem 2: Dijkstra's Algorithm")
       
@@ -316,11 +357,13 @@ def problem_2():
                   print("Invalid source vertex. Please choose from the available vertices.")
       
       # Solve via the Dijkstra's algorithm
-      distances = solver.solve(graph, source)
+      result = solver.solve_with_paths(graph, source)
 
-      if distances is None:  
+      if result is None:  
             print("No solution found.")
             return
-      
+      distances, paths = result
+
       print("\nSolution:")
       solver.print_distances(distances, source)
+      solver.print_paths(distances, paths, source)
