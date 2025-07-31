@@ -1,6 +1,6 @@
-from tasks.problem_1 import problem_1
-from tasks.problem_2 import problem_2
-from tasks.problem_3 import problem_3
+from tasks.problem_1_merge_sort import problem_1
+from tasks.problem_2_dijkstras_algorithm import problem_2
+from tasks.problem_3_sudoku_solver import problem_3
 
 
 if __name__ == "__main__":
