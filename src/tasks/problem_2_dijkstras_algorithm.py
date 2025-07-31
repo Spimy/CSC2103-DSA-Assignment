@@ -396,3 +396,7 @@ def problem_2():
     print("\nSolution:")
     solver.print_distances(distances, source)
     solver.print_paths(distances, paths, source)
+
+
+if __name__ == "__main__":
+    problem_2()

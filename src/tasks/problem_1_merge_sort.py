@@ -102,3 +102,7 @@ def problem_1() -> None:
     for i in sorted_arr:
         print(i, end=" ")
     print()
+
+
+if __name__ == "__main__":
+    problem_1()

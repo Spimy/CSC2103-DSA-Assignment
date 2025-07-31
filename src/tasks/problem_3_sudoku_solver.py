@@ -180,3 +180,7 @@ def problem_3():
 
     print("\nSolution:")
     solver.print_grid(solved)
+
+
+if __name__ == "__main__":
+    problem_3()
