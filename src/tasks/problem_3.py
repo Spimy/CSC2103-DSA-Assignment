@@ -1,12 +1,12 @@
 class Sudoku:
-    def solve(self, grid: list[list[int]]) -> list | None:
+    def solve(self, grid: list[list[int]]) -> list[list[int]] | None:
         # Validate the initial grid before solving
         if not self._is_valid_grid(grid):
             return None
 
         # Just a personal preference, I personally always try to avoid mutating the original copy.
         # Unfortunately Python does not support pass by value for mutable objectss so I have to make a deep copy instead.
-        grid_copy = []
+        grid_copy: list[list[int]] = []
         for row in grid:
             grid_copy.append(row[:])
 
@@ -15,13 +15,13 @@ class Sudoku:
         else:
             return None
 
-    def get_user_grid(self) -> list[list[int]]:
+    def get_user_grid(self) -> list[list[int]] | None:
         print("\n=== Sudoku Grid Input ===")
         print("Enter each row as 9 digits (0-9), where 0 represents an empty cell.")
         print("Example: '530070000' for the first row of the default puzzle.")
         print("Press Enter without input to use the default puzzle.\n")
 
-        grid = []
+        grid: list[list[int]] = []
 
         for i in range(9):
             while True:
