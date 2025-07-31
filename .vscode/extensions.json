@@ -7,6 +7,7 @@
     "ms-python.python",
     "kevinrose.vsc-python-indent",
     "mgesbert.python-path",
-    "britesnow.vscode-toggle-quotes"
+    "britesnow.vscode-toggle-quotes",
+    "ms-python.vscode-pylance"
   ]
 }
